@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthProvider';
+import toast from 'react-hot-toast'
 const Login = () => {
+    const {Login} = useContext(AuthContext)
     const { register,formState: { errors }, handleSubmit } = useForm()
     const loginHandling = data =>{
-        console.log(data)
+        Login(data.email, data.password)
+        .then(res =>{
+            const user = res.user 
+            if(user){
+                toast.success('Login successfully!')
+                console.log(user)
+            }
+        })
+        .catch(e =>{
+            console.log(e)
+            toast.success(e.message)
+        })
     }
-    console.log(errors)
     return (
         <div className='min-h-screen grid place-items-center'>
             <div className='shadow-xl p-10 border border-sky-600'>
@@ -21,6 +34,7 @@ const Login = () => {
                     <div className="form-control w-full max-w-xs">
                         <label className="label">Password</label>
                         <input 
+                        type={'password'}
                         {...register('password', {required: 'password is required', 
                         minLength: {value: 6, message:'password length minimum 6 characters.'}})} 
 
