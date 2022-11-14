@@ -2,8 +2,10 @@ import React from 'react';
 
 const Login = () => {
     return (
-        <div>
-            <h1>This is our login page</h1>
+        <div className='min-h-screen grid place-items-center'>
+            <div>
+                <h1 className='text-center text-secondary text-2xl'>Please Login</h1>
+            </div>
         </div>
     );
 };
