@@ -2,20 +2,20 @@ import React, { useContext } from 'react';
 import { format } from 'date-fns'
 import { AuthContext } from '../../../context/AuthProvider';
 import toast from 'react-hot-toast';
-const AppBookModal = ({ treatment, selectedDate,setTreatment }) => {
-    const {user} = useContext(AuthContext)
+const AppBookModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
+    const { user } = useContext(AuthContext)
     const { name, slots } = treatment
     const date = format(selectedDate, 'PP')
-    const appointmentHandling = event =>{
+    const appointmentHandling = event => {
         event.preventDefault()
-        const form = event.target 
-        const patientName = form.name.value 
-        const phone = form.phone.value 
-        const email = form.email.value 
-        const selectedTime = form.selectedTime.value 
+        const form = event.target
+        const patientName = form.name.value
+        const phone = form.phone.value
+        const email = form.email.value
+        const selectedTime = form.selectedTime.value
         const bookingDoc = {
-            appointmentDate: date, 
-            treatment: name, 
+            appointmentDate: date,
+            treatment: name,
             patient: patientName,
             phone,
             email,
@@ -23,20 +23,22 @@ const AppBookModal = ({ treatment, selectedDate,setTreatment }) => {
             selectedTime
         }
         fetch('http://localhost:5000/bookings', {
-            method:'POST', 
-            headers:{
+            method: 'POST',
+            headers: {
                 'content-type': 'application/json'
             },
             body: JSON.stringify(bookingDoc)
 
         })
-        .then(res => res.json())
-        .then(data =>{
-            if(data.acknowledged){
-                toast.success('Your appointment accepted!!')
-            }
-        })
-        setTreatment(null)
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    toast.success('Your appointment accepted!!')
+                    refetch()
+                    setTreatment(null)
+                }
+            })
+
     }
 
     return (
