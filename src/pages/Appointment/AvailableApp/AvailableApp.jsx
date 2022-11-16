@@ -2,16 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import AppServices from '../AppServices/AppServices';
 import AppBookModal from '../AppBookModal/AppBookModal';
+import { useQuery } from '@tanstack/react-query';
 const AvailableApp = ({selectedDate}) => {
-    const [services, setServices] = useState([])
     const [treatment, setTreatment] = useState(null)
-    useEffect(() =>{
-        fetch('services.json')
-        .then(res => res.json())
-        .then(data => {
-            setServices(data)
-        })
-    } ,[])
+
+    // const {data: services = []} = useQuery({
+    //     queryKey:['appointmentServicess'],
+    //     queryFn: () => fetch('http://localhost:5000/appointmentServicess')
+    //     .then(res => res.json())
+    // })
+
+    const {data: services = []} = useQuery({
+        queryKey:['appointmentServicess'],
+        queryFn:   async() =>{
+            const res = await fetch('http://localhost:5000/appointmentServicess')
+            const data = await res.json()
+            return data 
+        }
+    }) 
+    
 
     return (
         <div>

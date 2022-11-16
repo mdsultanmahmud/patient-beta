@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { format } from 'date-fns'
+import { AuthContext } from '../../../context/AuthProvider';
 const AppBookModal = ({ treatment, selectedDate,setTreatment }) => {
+    const {user} = useContext(AuthContext)
     const { name, slots } = treatment
     const date = format(selectedDate, 'PP')
     const appointmentHandling = event =>{
@@ -37,9 +39,9 @@ const AppBookModal = ({ treatment, selectedDate,setTreatment }) => {
                                 slots.map((slot, index) => <option key={index} value={slot}>{slot}</option>)
                             }
                         </select>
-                        <input type="text" required name='name' placeholder="Your Name" className="input input-bordered input-secondary w-full mb-3 input-sm" />
+                        <input type="text" disabled defaultValue={user?.displayName} name='name' placeholder="Your Name" className="input input-bordered input-secondary w-full mb-3 input-sm" />
                         <input type="text" required name='phone' placeholder="Phone Number" className="input input-bordered input-secondary w-full mb-3 input-sm" />
-                        <input type="text" required name='email' placeholder="Your Email" className="input input-bordered input-secondary w-full mb-3 input-sm" />
+                        <input type="text" disabled defaultValue={user?.email} name='email' placeholder="Your Email" className="input input-bordered input-secondary w-full mb-3 input-sm" />
                         <br />
                         <label htmlFor='appoinment-book-modal'><button type='submit' className='w-full my-3 btn btn-outline btn-secondary'>Submit</button></label>
                     </form>

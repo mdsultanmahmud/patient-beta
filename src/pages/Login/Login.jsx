@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import toast from 'react-hot-toast'
 const Login = () => {
-    const { Login } = useContext(AuthContext)
+    const { Login, googleSign } = useContext(AuthContext)
     const { register, formState: { errors }, handleSubmit } = useForm()
     const location = useLocation()
     const navigate = useNavigate()
@@ -24,6 +24,22 @@ const Login = () => {
                 console.log(e)
                 toast.success(e.message)
             })
+    }
+
+    const handleGoogleLogin = () =>{
+        googleSign()
+        .then(res =>{
+            const user = res.user
+            if(user){
+                toast.success('Login Succesfull')
+                console.log(user)
+                navigate(from, { replace: true })
+            }
+        })
+        .catch(err =>{
+            console.log(err)
+            toast.error(e.message)
+        })
     }
     return (
         <div className='min-h-screen grid place-items-center'>
@@ -55,7 +71,7 @@ const Login = () => {
                 </form>
                 <p className='text-sm font-bold my-3'>New to doctors portal? <Link to={'/register'} className='text-green-700'>Please create an account</Link></p>
                 <div className="divider">OR</div>
-                <button className='btn btn-secondary w-full'>Sign in with Google</button>
+                <button onClick={handleGoogleLogin} className='btn btn-secondary w-full'>Sign in with Google</button>
             </div>
         </div>
     );

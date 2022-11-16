@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import toast from 'react-hot-toast'
 const Register = () => {
-    const { Register, updateUserProfie } = useContext(AuthContext)
+    const { Register, updateUserProfie,googleSign ,emailVerify} = useContext(AuthContext)
     const { register, formState: { errors }, handleSubmit } = useForm()
+    const naviget = useNavigate()
+
+
     const handleRegister = data => {
         console.log(data)
         const profie = {
@@ -18,6 +21,11 @@ const Register = () => {
                     .then(res => {
                         console.log(user)
                         toast.success('You have created an account successfully!!')
+                        naviget('/')
+                        emailVerify()
+                        .then(res =>{
+                            toast.success('Please verify your email')
+                        })
                     })
                     .catch(e => {
                         console.log(e)
@@ -28,6 +36,23 @@ const Register = () => {
                 console.log(e)
                 toast.error(e.message)
             })
+    }
+
+
+    const handleGoogleLogin = () =>{
+        googleSign()
+        .then(res =>{
+            const user = res.user
+            if(user){
+                toast.success('Login Succesfull')
+                console.log(user)
+                naviget('/')
+            }
+        })
+        .catch(err =>{
+            console.log(err)
+            toast.error(e.message)
+        })
     }
     return (
         <div className='min-h-screen grid place-items-center'>
@@ -67,7 +92,7 @@ const Register = () => {
                 </form>
                 <p className='text-sm font-bold my-3'>Already have an account?? <Link to={'/login'} className='text-green-700'>Please Login</Link></p>
                 <div className="divider">OR</div>
-                <button className='btn btn-secondary w-full'>Sign in with Google</button>
+                <button onClick={handleGoogleLogin} className='btn btn-secondary w-full'>Sign in with Google</button>
             </div>
         </div>
     );
