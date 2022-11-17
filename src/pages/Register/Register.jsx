@@ -21,7 +21,7 @@ const Register = () => {
                     .then(res => {
                         console.log(user)
                         toast.success('You have created an account successfully!!')
-                        naviget('/')
+                        createUserIntoDB(data.name, data.email)
                         emailVerify()
                         .then(res =>{
                             toast.success('Please verify your email')
@@ -38,6 +38,22 @@ const Register = () => {
             })
     }
 
+
+    const createUserIntoDB = (name, email) =>{
+        const dbStoredUser = {name, email}
+        fetch(`http://localhost:5000/users`, {
+            method: 'POST', 
+            headers:{
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(dbStoredUser)
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            naviget('/')
+        })
+    }
 
     const handleGoogleLogin = () =>{
         googleSign()
