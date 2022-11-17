@@ -36,6 +36,8 @@ const AppBookModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
                     toast.success('Your appointment accepted!!')
                     refetch()
                     setTreatment(null)
+                }else{
+                    toast.error(data.message)
                 }
             })
 
