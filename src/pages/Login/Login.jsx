@@ -3,13 +3,20 @@ import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import toast from 'react-hot-toast'
+import useToken from '../../customHooks/useToken';
 const Login = () => {
     const { Login, googleSign } = useContext(AuthContext)
     const { register, formState: { errors }, handleSubmit } = useForm()
+    const [loggedUserEmail, setLoggedUserEmail] = useState('')
+    const [token] = useToken(loggedUserEmail)
     const location = useLocation()
     const navigate = useNavigate()
     const from = location.state?.from?.pathname || "/"
 
+
+    if (token) {
+        navigate(from, { replace: true })
+    }
     const loginHandling = data => {
         Login(data.email, data.password)
             .then(res => {
@@ -17,7 +24,7 @@ const Login = () => {
                 if (user) {
                     toast.success('Login successfully!')
                     console.log(user)
-                    navigate(from, { replace: true })
+                    setLoggedUserEmail(data.email)
                 }
             })
             .catch(e => {
@@ -26,20 +33,20 @@ const Login = () => {
             })
     }
 
-    const handleGoogleLogin = () =>{
+    const handleGoogleLogin = () => {
         googleSign()
-        .then(res =>{
-            const user = res.user
-            if(user){
-                toast.success('Login Succesfull')
-                console.log(user)
-                navigate(from, { replace: true })
-            }
-        })
-        .catch(err =>{
-            console.log(err)
-            toast.error(e.message)
-        })
+            .then(res => {
+                const user = res.user
+                if (user) {
+                    toast.success('Login Succesfull')
+                    console.log(user)
+                    navigate(from, { replace: true })
+                }
+            })
+            .catch(err => {
+                console.log(err)
+                toast.error(e.message)
+            })
     }
     return (
         <div className='min-h-screen grid place-items-center'>

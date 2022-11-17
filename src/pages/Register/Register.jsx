@@ -1,14 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import toast from 'react-hot-toast'
+import useToken from '../../customHooks/useToken';
 const Register = () => {
     const { Register, updateUserProfie,googleSign ,emailVerify} = useContext(AuthContext)
     const { register, formState: { errors }, handleSubmit } = useForm()
     const naviget = useNavigate()
-
-
+    const [createdUserToken, setCreatedUserToken] = useState('')
+    const [token] = useToken(createdUserToken)
+    if(token){
+        naviget('/')
+    }
     const handleRegister = data => {
         console.log(data)
         const profie = {
@@ -51,7 +55,8 @@ const Register = () => {
         .then(res => res.json())
         .then(data => {
             console.log(data)
-            naviget('/')
+            setCreatedUserToken(email)
+            
         })
     }
 
