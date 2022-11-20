@@ -1,19 +1,40 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { BallTriangle } from 'react-loader-spinner'
+import DeletingModal from '../DeletingModal/DeletingModal';
 const ManageDoc = () => {
-    const { data: doctors = [], isLoading } = useQuery({
+    const [deleteDoctor, setDeleteDoctor] = useState(null)
+    const { data: doctors = [], isLoading, refetch } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
             const res = await fetch('http://localhost:5000/doctors', {
                 headers: {
-                    authorizationtoken: `Bearer ${localStorage.getItem('accessToken')}`
+                    authorizationToken: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
             const data = await res.json()
             return data
         }
     })
+
+
+    const deletingDoctor = doctor => {
+        fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+            method: 'DELETE',
+            headers: {
+                authorizationToken: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+            .then(res => res.json())
+            .then(deleteData => {
+                console.log(deleteData)
+                if (deleteData.deletedCount > 0) {
+                    toast.success(`${doctor.name} Deleted successfully!`)
+                    refetch()
+                }
+            })
+    }
 
     if (isLoading) {
         return <div className='w-[100%] h-[80vh] grid place-items-center'>
@@ -31,7 +52,7 @@ const ManageDoc = () => {
     }
     return (
         <div>
-            <h1>Our All Doctors</h1>
+            <h1 className='text-center font-semibold text-secondary text-2xl my-4'>Our All Doctors</h1>
             <div className="overflow-x-auto w-full">
                 <table className="table w-full">
                     <thead>
@@ -61,7 +82,7 @@ const ManageDoc = () => {
                                 <td>{doctor.email}</td>
                                 <td>{doctor.speciality}</td>
                                 <th>
-                                    <button className="btn btn-outline btn-primary btn-xs">Delete</button>
+                                    <label onClick={() => setDeleteDoctor(doctor)} htmlFor="confirmDeleteModal" className="btn btn-outline btn-primary btn-xs">Delete</label>
                                 </th>
                             </tr>)
                         }
@@ -69,6 +90,15 @@ const ManageDoc = () => {
                     </tbody>
 
                 </table>
+            </div>
+            <div>
+                {
+                    deleteDoctor && <DeletingModal
+                        key={deleteDoctor._id}
+                        deleteDoctor={deleteDoctor}
+                        deletingDoctor={deletingDoctor}
+                    ></DeletingModal>
+                }
             </div>
         </div>
     );

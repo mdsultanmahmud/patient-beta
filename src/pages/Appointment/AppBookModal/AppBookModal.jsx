@@ -4,7 +4,7 @@ import { AuthContext } from '../../../context/AuthProvider';
 import toast from 'react-hot-toast';
 const AppBookModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
     const { user } = useContext(AuthContext)
-    const { name, slots } = treatment
+    const { name,price, slots } = treatment
     const date = format(selectedDate, 'PP')
     const appointmentHandling = event => {
         event.preventDefault()
@@ -18,6 +18,7 @@ const AppBookModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
             treatment: name,
             patient: patientName,
             phone,
+            price,
             email,
             phone,
             selectedTime
@@ -69,4 +70,4 @@ const AppBookModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
     );
 };
 
-export default AppBookModal;
+export default AppBookModal 

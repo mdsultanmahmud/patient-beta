@@ -3,19 +3,20 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../../../context/AuthProvider';
 import { BallTriangle } from 'react-loader-spinner'
+import { Link } from 'react-router-dom';
 const MyAppointment = () => {
     const { user } = useContext(AuthContext)
     const { data: bookedAppointment = [], isLoading } = useQuery({
         queryKey: ['bookings', user?.email],
         queryFn: async () => {
             const res = await fetch(`http://localhost:5000/bookings?email=${user.email}`, {
-                headers:{
+                headers: {
                     authorizationToken: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
-            const data = await  res.json()
+            const data = await res.json()
             console.log(data)
-            return data 
+            return data
         }
     })
 
@@ -48,6 +49,7 @@ const MyAppointment = () => {
                                 <th>Treatment</th>
                                 <th>Date</th>
                                 <th>Time</th>
+                                <th>Payment</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,6 +60,20 @@ const MyAppointment = () => {
                                     <td>{booked.treatment}</td>
                                     <td>{booked.appointmentDate}</td>
                                     <td>{booked.selectedTime}</td>
+                                    <td>
+                                        {
+                                            booked.price && !booked.paid &&
+                                            <Link to={`/dashboard/payment/${booked._id}`}>
+                                                <button className='btn btn-outline btn-secondary btn-xs'>
+                                                    Pay
+                                                </button>
+                                            </Link>
+                                        }
+                                        {
+                                            booked.price && booked.paid &&
+                                            <button className='btn btn-outline btn-secondary btn-xs'>Paid</button>
+                                        }
+                                    </td>
                                 </tr>)
                             }
                         </tbody>

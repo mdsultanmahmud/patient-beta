@@ -47,14 +47,14 @@ const AddDoctor = () => {
                         },
                         body: JSON.stringify(addingDoctor)
                     })
-                    .then(res => res.json())
-                    .then(serverData =>{
-                        if(serverData.acknowledged){
-                            toast.success('Doctor added!')
-                            navigate('/dashboard/manageDoctor')
-                        }
-                        console.log(serverData)
-                    })
+                        .then(res => res.json())
+                        .then(serverData => {
+                            if (serverData.acknowledged) {
+                                toast.success('Doctor added!')
+                                navigate('/dashboard/manageDoctor')
+                            }
+                            console.log(serverData)
+                        })
                 }
 
             })
@@ -80,47 +80,49 @@ const AddDoctor = () => {
     }
     return (
         <div>
-            <h3>Add a lo n doctor</h3>
-            <form onSubmit={handleSubmit(handleAddDoctor)}>
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">Name</label>
-                    <input {...register('name', { required: 'Name is required' })}
-                        className="input input-bordered w-full max-w-xs" />
-                    {errors.name && <p role={'alert'} className='text-error text-sm my-2'>{errors.name?.message}</p>}
-                </div>
+            <h3 className='text-center font-semibold text-secondary text-2xl my-4'>Add a Doctor</h3>
+            <div className='grid place-items-center'>
+                <form onSubmit={handleSubmit(handleAddDoctor)}>
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">Name</label>
+                        <input {...register('name', { required: 'Name is required' })}
+                            className="input input-bordered w-full max-w-xs" />
+                        {errors.name && <p role={'alert'} className='text-error text-sm my-2'>{errors.name?.message}</p>}
+                    </div>
 
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">Email</label>
-                    <input {...register('email', { required: 'Email is required' })}
-                        className="input input-bordered w-full max-w-xs" />
-                    {errors.email && <p role={'alert'} className='text-error text-sm my-2'>{errors.email?.message}</p>}
-                </div>
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">Email</label>
+                        <input {...register('email', { required: 'Email is required' })}
+                            className="input input-bordered w-full max-w-xs" />
+                        {errors.email && <p role={'alert'} className='text-error text-sm my-2'>{errors.email?.message}</p>}
+                    </div>
 
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">Doctors Chamber</label>
-                    <input {...register('chamber', { required: 'Chamber is required' })}
-                        className="input input-bordered w-full max-w-xs" />
-                    {errors.chamber && <p role={'alert'} className='text-error text-sm my-2'>{errors.chamber?.message}</p>}
-                </div>
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">Doctors Chamber</label>
+                        <input {...register('chamber', { required: 'Chamber is required' })}
+                            className="input input-bordered w-full max-w-xs" />
+                        {errors.chamber && <p role={'alert'} className='text-error text-sm my-2'>{errors.chamber?.message}</p>}
+                    </div>
 
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">Speciality</label>
-                    <select {...register('speciality', { required: 'Please add your speciality.' })} className="select select-bordered w-full max-w-xs">
-                        {
-                            specialities.map(sp => <option key={sp._id}>{sp.name}</option>)
-                        }
-                    </select>
-                    {errors.speciality && <p role={'alert'} className='text-error text-sm my-2'>{errors.speciality?.message}</p>}
-                </div>
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">Speciality</label>
+                        <select {...register('speciality', { required: 'Please add your speciality.' })} className="select select-bordered w-full max-w-xs">
+                            {
+                                specialities.map(sp => <option key={sp._id}>{sp.name}</option>)
+                            }
+                        </select>
+                        {errors.speciality && <p role={'alert'} className='text-error text-sm my-2'>{errors.speciality?.message}</p>}
+                    </div>
 
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">Add Image</label>
-                    <input type={'file'} {...register('file', { required: 'Image is required' })}
-                        className="input input-bordered w-full max-w-xs" />
-                    {errors.file && <p role={'alert'} className='text-error text-sm my-2'>{errors.file?.message}</p>}
-                </div>
-                <input value={'Add Doctor'} type="submit" className="btn w-full max-w-xs mt-2" />
-            </form>
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">Add Image</label>
+                        <input type={'file'} {...register('file', { required: 'Image is required' })}
+                            className="input input-bordered w-full max-w-xs" />
+                        {errors.file && <p role={'alert'} className='text-error text-sm my-2'>{errors.file?.message}</p>}
+                    </div>
+                    <input value={'Add Doctor'} type="submit" className="btn w-full max-w-xs mt-2" />
+                </form>
+            </div>
         </div>
     );
 };
