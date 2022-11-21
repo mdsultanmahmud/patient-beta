@@ -9,7 +9,7 @@ const MyAppointment = () => {
     const { data: bookedAppointment = [], isLoading } = useQuery({
         queryKey: ['bookings', user?.email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/bookings?email=${user.email}`, {
+            const res = await fetch(`https://patient-beta-server.vercel.app/bookings?email=${user.email}`, {
                 headers: {
                     authorizationToken: `Bearer ${localStorage.getItem('accessToken')}`
                 }

@@ -9,7 +9,7 @@ const AddDoctor = () => {
     const { data: specialities = [], isLoading } = useQuery({
         queryKey: ['speciality'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/appointmentSpeciality')
+            const res = await fetch('https://patient-beta-server.vercel.app/appointmentSpeciality')
             const data = await res.json()
             return data
         }
@@ -39,7 +39,7 @@ const AddDoctor = () => {
                     }
                     console.log(addingDoctor)
 
-                    fetch('http://localhost:5000/doctors', {
+                    fetch('https://patient-beta-server.vercel.app/doctors', {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',

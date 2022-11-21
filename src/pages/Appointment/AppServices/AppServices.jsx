@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../context/AuthProvider';
 
 const AppServices = ({ service, setTreatment }) => {
+    const {user} = useContext(AuthContext)
+    console.log(user.email)
     const { name,price, slots } = service
     return (
         <div className="card bg-base-100 shadow-xl">
@@ -10,12 +14,18 @@ const AppServices = ({ service, setTreatment }) => {
                 <p>{slots.length} {slots.length > 1 ? 'spaces' : 'space'} available</p>
                 <p><strong>Price:</strong> ${price}</p>
                 <div className="card-actions justify-end">
-                    <label
+                    {
+                        user?.email ? 
+                        <label
                         onClick={() => setTreatment(service)}
                         htmlFor="appoinment-book-modal"
                         className="btn btn-secondary btn-outline my-4"
                         disabled = {slots.length === 0}
-                        >Book Appointment</label>
+                        >Book Appointment
+                        </label>
+                        :
+                        <Link to={'/login'} className='font-bold text-sm text-green-500'>Please Login to Book</Link>
+                    }
                 </div>
             </div>
         </div>

@@ -45,7 +45,7 @@ const Register = () => {
 
     const createUserIntoDB = (name, email) =>{
         const dbStoredUser = {name, email}
-        fetch(`http://localhost:5000/users`, {
+        fetch(`https://patient-beta-server.vercel.app/users`, {
             method: 'POST', 
             headers:{
                 'content-type': 'application/json'

@@ -9,14 +9,14 @@ const AvailableApp = ({ selectedDate }) => {
     const date = format(selectedDate, 'PP')
     // const {data: services = []} = useQuery({
     //     queryKey:['appointmentServicess'],
-    //     queryFn: () => fetch('http://localhost:5000/appointmentServicess')
+    //     queryFn: () => fetch('https://patient-beta-server.vercel.app/appointmentServicess')
     //     .then(res => res.json())
     // })
 
     const { data: services = [], refetch, isLoading } = useQuery({
         queryKey: ['appointmentServicess', date],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/appointmentServicess?date=${date}`)
+            const res = await fetch(`https://patient-beta-server.vercel.app/appointmentServicess?date=${date}`)
             const data = await res.json()
             return data
         }

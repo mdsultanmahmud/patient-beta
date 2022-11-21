@@ -23,7 +23,7 @@ const AppBookModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
             phone,
             selectedTime
         }
-        fetch('http://localhost:5000/bookings', {
+        fetch('https://patient-beta-server.vercel.app/bookings', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
