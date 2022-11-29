@@ -4,7 +4,6 @@ import { AuthContext } from '../../../context/AuthProvider';
 
 const AppServices = ({ service, setTreatment }) => {
     const {user} = useContext(AuthContext)
-    console.log(user.email)
     const { name,price, slots } = service
     return (
         <div className="card bg-base-100 shadow-xl">
