@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import toast from 'react-hot-toast'
 import useToken from '../../customHooks/useToken';
+import { Helmet } from 'react-helmet';
 const Register = () => {
     const { Register, updateUserProfie,googleSign ,emailVerify} = useContext(AuthContext)
     const { register, formState: { errors }, handleSubmit } = useForm()
@@ -77,6 +78,9 @@ const Register = () => {
     }
     return (
         <div className='min-h-screen grid place-items-center'>
+            <Helmet>
+                <title>Patient Beta -- Register</title>
+            </Helmet>
             <div className='shadow-xl p-10 border border-sky-600 my-4'>
                 <h1 className='text-center text-secondary text-2xl font-bold'>Create Account!</h1>
                 <form onSubmit={handleSubmit(handleRegister)}>

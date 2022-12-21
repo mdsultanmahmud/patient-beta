@@ -4,6 +4,7 @@ import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../../../context/AuthProvider';
 import { BallTriangle } from 'react-loader-spinner'
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 const MyAppointment = () => {
     const { user } = useContext(AuthContext)
     const { data: bookedAppointment = [], isLoading } = useQuery({
@@ -37,6 +38,9 @@ const MyAppointment = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>Patient Beta -- Dashboard</title>
+            </Helmet>
             <h2 className='my-4 font-semibold text-2xl'>My Appointment</h2>
             {
                 bookedAppointment.length > 0 &&
